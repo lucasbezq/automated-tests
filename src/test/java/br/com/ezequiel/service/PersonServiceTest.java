@@ -33,7 +33,7 @@ public class PersonServiceTest {
         assertNotNull(actual, () -> "The createPerson() should not have returned null!");
     }
 
-    @DisplayName("When create a person with success should contains firstName in return Person Object")
+    @DisplayName("When create a person with success should contains correct data in return Person Object")
     @Test
     void testCreatePerson_WhenSuccess_ShouldContainsCorrectDataInReturnPersonObject() {
         //Given
@@ -44,19 +44,19 @@ public class PersonServiceTest {
 
         //Then
         assertEquals(person.getFirstName(), actual.getFirstName(),
-                () -> "The firstName is differet!");
+                () -> "The Person firstName is incorrect!");
 
         assertEquals(person.getLastName(), actual.getLastName(),
-                () -> "The lastName is differet!");
+                () -> "The Person lastName is incorrect!");
 
         assertEquals(person.getEmail(), actual.getEmail(),
-                () -> "The email is differet!");
+                () -> "The Person email is incorrect!");
 
         assertEquals(person.getAddress(), actual.getAddress(),
-                () -> "The address is differet!");
+                () -> "The Person address is incorrect!");
 
         assertEquals(person.getGender(), actual.getGender(),
-                () -> "The gender is differet!");
+                () -> "The Person gender is incorrect!");
     }
 
 
