@@ -13,9 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PersonServiceTest {
 
     Person person;
+    IPersonService service;
 
     @BeforeEach
     void setup() {
+        service = new PersonService();
         person = new Person("Lucas", "Ezequiel", "lucas@gmailcom",
                 "Ipanema", "Male");
     }
@@ -23,9 +25,6 @@ public class PersonServiceTest {
     @DisplayName("When create a person with success should return a Person Object")
     @Test
     void testCreatePerson_WhenSuccess_ShouldReturnPersonObject() {
-        //Given
-        IPersonService service = new PersonService();
-
         //When
         Person actual = service.createPerson(person);
 
@@ -33,16 +32,15 @@ public class PersonServiceTest {
         assertNotNull(actual, () -> "The createPerson() should not have returned null!");
     }
 
-    @DisplayName("When create a person with success should contains correct data in return Person Object")
+    @DisplayName("When create a Person with success should contains correct data in return Person Object")
     @Test
     void testCreatePerson_WhenSuccess_ShouldContainsCorrectDataInReturnPersonObject() {
-        //Given
-        IPersonService service = new PersonService();
-
         //When
         Person actual = service.createPerson(person);
 
         //Then
+        assertNotNull(person.getId(), () -> "personId is missing!");
+
         assertEquals(person.getFirstName(), actual.getFirstName(),
                 () -> "The Person firstName is incorrect!");
 
@@ -57,6 +55,21 @@ public class PersonServiceTest {
 
         assertEquals(person.getGender(), actual.getGender(),
                 () -> "The Person gender is incorrect!");
+    }
+
+    @DisplayName("When create a Person with null e-mail should throw Exception")
+    @Test
+    void testCreatePerson_WithNullEmail_ShouldThrowIllegalArgumentException() {
+        person.setEmail(null);
+
+        var expectedMessage = "The Person e-mail is null or empty!";
+
+        var actual = assertThrows(IllegalArgumentException.class,
+                ()-> service.createPerson(person),
+                () -> "Empty e-mail should have cause an IllegalArgumentException");
+
+        assertEquals(expectedMessage, actual.getMessage(),
+                () -> "Exception error message is incorrect!");
     }
 
 
