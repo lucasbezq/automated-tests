@@ -1,62 +1,60 @@
 package br.com.ezequiel.business;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
+import static org.hamcrest.Matchers.*;
 
-public class ListTest {
+public class ListWithBDDTest {
 
     @Test
     void testMockingList_When_SizeIsCalled_ShouldReturn10() {
         //Given
         var list = mock(List.class);
-        when(list.size()).thenReturn(10);
+        given(list.size()).willReturn(10);
 
         //Then
-        assertEquals(10, list.size());
+        assertThat(list.size(), is(10));
     }
 
     @Test
     void testMockingList_When_SizeIsCalled_ShouldReturnMultipleValues() {
         //Given
         var list = mock(List.class);
-        when(list.size()).thenReturn(10).thenReturn(20);
+        given(list.size()).willReturn(10).willReturn(20);
 
         //Then
-        assertEquals(10, list.size());
-        assertEquals(20, list.size());
+        assertThat(list.size(), is(10));
+        assertThat(list.size(), is(20));
     }
 
     @Test
     void testMockingList_When_SizeIsCalled_ShouldReturnLucas() {
         var list = mock(List.class);
-        when(list.get(0)).thenReturn("Lucas");
+        given(list.get(0)).willReturn("Lucas");
 
-        assertEquals("Lucas", list.get(0));
+        assertThat(list.get(0), is("Lucas"));
         assertNull(list.get(1));
     }
 
-    @Test
-    void testMockingList_When_GetIsCalledWithArgumentMatcher_ShouldReturnLucas() {
-        var list = mock(List.class);
-        when(list.get(anyInt())).thenReturn("Lucas");
-
-        assertEquals("Lucas", list.get(0));
-        assertEquals("Lucas", list.get(10));
-    }
 
     @Test
     void testMockingList_When_ThrowsAnException() {
         var list = mock(List.class);
 
-        when(list.get(anyInt())).thenThrow(new RuntimeException("Foo Bar!!"));
+        given(list.get(anyInt())).willThrow(new RuntimeException("Foo Bar!!"));
 
         assertThrows(RuntimeException.class, () -> {
             list.get(anyInt());
         }, () -> "Should have throw an RuntimeException");
     }
+
+
 
 }
